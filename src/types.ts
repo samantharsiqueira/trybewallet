@@ -14,3 +14,8 @@ export type ActionType = {
   type: string,
   payload: UserType,
 };
+
+export type ActionTypeWallter = {
+  type: string,
+  payload: WalletType,
+};

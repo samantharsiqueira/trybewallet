@@ -1,10 +1,11 @@
 import Header from '../components/Header';
+import WalletForm from '../components/WalletForm';
 
 function Wallet() {
   return (
     <div>
       <Header />
-      <h1>Wallet</h1>
+      <WalletForm />
     </div>
   );
 }
