@@ -7,6 +7,9 @@ export type UserType = {
 
 export type WalletType = {
   email: string,
+  currencies: string,
+  expenses: string,
+  id: number,
 };
 
 // Criar um tipo para cada action
@@ -15,7 +18,34 @@ export type ActionType = {
   payload: UserType,
 };
 
-export type ActionTypeWallter = {
+export type ActionTypeWallet = {
   type: string,
   payload: WalletType,
+};
+
+type ExchangeRateType = {
+  ask: string;
+  name: string;
+};
+
+export type ExpenseType = {
+  id: number;
+  value: string;
+  description: string;
+  currency: string;
+  method: string;
+  tag: string;
+  exchangeRates: Record<string, ExchangeRateType>;
+};
+
+export type InitialStateType = {
+  user: {
+    email: string;
+  };
+  wallet: {
+    currencies: string[];
+    expenses: ExpenseType[];
+    editor: boolean;
+    idToEdit: number;
+  };
 };

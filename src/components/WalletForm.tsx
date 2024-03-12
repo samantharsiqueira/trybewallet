@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux'; // Como ajustar a tipagem??
+import { fetchCurrencies } from '../redux/actions';
 
 function WalletForm() {
-  const dispatch = useDispatch(); // Evia pro estado global
-  const currencies = useSelector((state: AnyAction) => state.currencies); // Seleciona a moeda e guarda em currencies
+  const dispatch = useDispatch(); // Envia pro estado global
+  const currencies = useSelector((state: AnyAction) => state.wallet.currencies); // Seleciona a moeda e guarda em currencies
   const [value, setValue] = useState(''); // Valor inicial do input valor
   const [description, setDescription] = useState(''); // Valor inicial da descrição
   const [selectedCurrency, setSelectedCurrency] = useState('USD'); // Valor inicial da moeda
@@ -13,19 +14,19 @@ function WalletForm() {
 
   useEffect(() => {
     // Fazer a requisição à API no momento da renderização do componente
-    const fetchCurrencies = async () => {
+    const getCurrencies = async () => {
       try {
         const response = await fetch('https://economia.awesomeapi.com.br/json/all');
         const data = await response.json();
         const currenciesArray = Object.keys(data) // Pega as chaves do objeto
           .filter((currency) => currency !== 'USDT'); // Filtra as moedas que não são USDT
-        dispatch({ type: 'SET_CURRENCIES', payload: currenciesArray }); // Envia as moedas para o estado global
+        dispatch(fetchCurrencies(currenciesArray)); // Envia as moedas para o estado global
       } catch (error) {
         console.error('Erro ao obter moedas da API', error);
       }
     };
 
-    fetchCurrencies();
+    getCurrencies();
   }, [dispatch]);
 
   const handleAddExpense = () => {
@@ -69,7 +70,7 @@ function WalletForm() {
         value={ selectedCurrency }
         onChange={ (e) => setSelectedCurrency(e.target.value) }
       >
-        {currencies.map((currencyOption: string) => (
+        {currencies?.map((currencyOption: string) => (
           <option key={ currencyOption } value={ currencyOption }>
             {currencyOption}
           </option>

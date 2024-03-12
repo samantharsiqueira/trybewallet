@@ -2,12 +2,12 @@
 
 import { ActionType } from '../../types';
 
-const INITIAL_STATE = {
+const INITIAL_STATE_USER = {
   email: '',
   senha: '',
 };
 
-function user(state = INITIAL_STATE, action: ActionType) {
+function user(state = INITIAL_STATE_USER, action: ActionType) {
   switch (action.type) {
     case 'LOGIN_USER': // nome da action
       console.log(action.payload);
