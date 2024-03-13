@@ -10,9 +10,7 @@ const INITIAL_STATE_USER = {
 function user(state = INITIAL_STATE_USER, action: ActionType) {
   switch (action.type) {
     case 'LOGIN_USER': // nome da action
-      console.log(action.payload);
-
-      return { ...state, email: action.payload.email, senha: action.payload.senha };
+      return { ...state, email: action.payload.email };
     default:
       return state;
   }

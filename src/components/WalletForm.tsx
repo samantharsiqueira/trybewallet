@@ -29,6 +29,8 @@ function WalletForm() {
     getCurrencies();
   }, [dispatch]);
 
+  console.log(currencies);
+
   const handleAddExpense = () => {
     // Lógica para adicionar a despesa ao estado global
     const newExpense = {

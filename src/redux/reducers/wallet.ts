@@ -1,16 +1,26 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { AnyAction } from 'redux';
-import { ActionTypeWallet } from '../../types';
 import { FETCH_CURRENCIES, ADD_EXPENSE } from '../actions';
+import { ExpenseType, InitialStateType } from '../../types';
+
+export type ActionWallet = {
+  type: string;
+  payload: {
+    email: string;
+    currencies: string[];
+    expenses: ExpenseType[];
+    id: number;
+    idToEdit: number
+  }
+};
 
 const INITIAL_STATE_WALLET = {
   currencies: [],
   expenses: [],
   editor: false,
-  idtoEdit: 0,
+  idToEdit: 0,
 };
 
-function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionTypeWallet) {
+function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionWallet) {
   switch (action.type) {
     case FETCH_CURRENCIES: // nome da action
       console.log(action.payload);
@@ -23,7 +33,8 @@ function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionTypeWallet) {
     case 'DELETE_EXPENSE':
       return {
         ...state,
-        expenses: state.expenses.filter((expense) => expense !== action.payload.id),
+        expenses: state.expenses
+          .filter((expense) => expense !== action.payload.id),
       };
 
     default:
@@ -33,10 +44,10 @@ function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionTypeWallet) {
 
 // Novo seletor para calcular a soma total das despesas
 // Ajustar a tipagem correta
-export const selectTotalExpenses = (state: AnyAction) => {
-  return state.wallet.expenses.reduce((prev:string, cur: AnyAction) => {
+export const selectTotalExpenses = (state: InitialStateType) => {
+  return state.wallet.expenses.reduce((acc, cur) => {
     const sum = Number(cur.value) * Number(cur.exchangeRates[cur.currency]?.ask || 0);
-    return prev + sum;
+    return acc + sum;
   }, 0);
 };
 
