@@ -82,4 +82,26 @@ describe('Login page works properly', () => {
 
     expect(screen.getByRole('heading', { name: 'Wallet' })).toBeInTheDocument();
   });
+
+  test('Shows error message for invalid email', async () => {
+    renderWithRouterAndRedux(<Login />);
+
+    const login = screen.getByTestId('email-input');
+
+    await userEvent.type(login, 'invalidemail');
+
+    const errorMessage = screen.getByText(/E-mail inválido/i);
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  test('Shows error message for invalid password', async () => {
+    renderWithRouterAndRedux(<Login />);
+
+    const password = screen.getByTestId('password-input');
+
+    await userEvent.type(password, '123');
+
+    const errorMessage = screen.getByText(/Senha deve ter pelo menos 6 caracteres/i);
+    expect(errorMessage).toBeInTheDocument();
+  });
 });

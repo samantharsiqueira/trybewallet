@@ -38,7 +38,7 @@ export type ExpenseType = {
   exchangeRates: Record<string, ExchangeRateType>;
 };
 
-export type InitialStateType = {
+export type StoreType = {
   user: {
     email: string;
   };

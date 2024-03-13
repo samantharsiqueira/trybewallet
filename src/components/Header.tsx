@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { AnyAction } from 'redux';
-import { selectTotalExpenses } from '../redux/reducers/wallet';
+import { StoreType } from '../types';
 
 function Header() {
-  // Armazenar o estado do Redux
-  const userInfo = useSelector((state: AnyAction) => state.user);
+  // const [expenses, setExpenses] = useState(0);
 
-  const totalExpenses = useSelector(selectTotalExpenses);
+  // Armazenar o estado do Redux
+  const userInfo = useSelector((state: StoreType) => state.user);
+  const walletInfo = useSelector((state: StoreType) => state.wallet);
+  let expenses = 0;
+  if (walletInfo.expenses.length > 0) {
+    expenses = walletInfo.expenses.reduce((acc, cur) => {
+      const { value, exchangeRates, currency } = cur;
+      const { ask } = exchangeRates[currency];
+      // const sum = Number(cur.value) * Number(cur.exchangeRates[cur.currency]?.ask || 0);
+      return acc + (Number(value) * Number(ask));
+    }, 0);
+    // setExpenses(selectTotalExpenses);
+    // console.log(selectTotalExpenses);
+  }
 
   return (
     <header>
       <h3 data-testid="email-field">{userInfo.email}</h3>
-      <h3 data-testid="total-field">{totalExpenses.toFixed(2)}</h3>
+      <h3 data-testid="total-field">{expenses.toFixed(2)}</h3>
       <h3 data-testid="header-currency-field">BRL</h3>
     </header>
   );

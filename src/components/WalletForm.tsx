@@ -10,7 +10,9 @@ function WalletForm() {
   const [description, setDescription] = useState(''); // Valor inicial da descrição
   const [selectedCurrency, setSelectedCurrency] = useState('USD'); // Valor inicial da moeda
   const [method, setMethod] = useState('Dinheiro'); // Valor inicial do método de pagamento
-  const [tag, setTag] = useState('Alimentação'); // Valor inicial, pode ser ajustado conforme necessário
+  const [tag, setTag] = useState('Alimentação'); // Valor inicial da categoria da despesa
+  const [rate, setRate] = useState({}); // Valor inicial da cotação da moeda
+  const walletState = useSelector((state: any) => state.wallet); // Valor inciial da wallet
 
   useEffect(() => {
     // Fazer a requisição à API no momento da renderização do componente
@@ -18,6 +20,8 @@ function WalletForm() {
       try {
         const response = await fetch('https://economia.awesomeapi.com.br/json/all');
         const data = await response.json();
+        console.log(data);
+        setRate(data);
         const currenciesArray = Object.keys(data) // Pega as chaves do objeto
           .filter((currency) => currency !== 'USDT'); // Filtra as moedas que não são USDT
         dispatch(fetchCurrencies(currenciesArray)); // Envia as moedas para o estado global
@@ -32,15 +36,21 @@ function WalletForm() {
   console.log(currencies);
 
   const handleAddExpense = () => {
+    // Fazer a requisição à API no momento do clique do botão
+    WalletForm();
     // Lógica para adicionar a despesa ao estado global
+    let id = 0;
+    if (walletState.expenses.length > 0) {
+      id = walletState.expenses[walletState.expenses.length - 1].id + 1;
+    }
     const newExpense = {
-      id: Date.now(), // ID sequencial
+      id, // ID sequencial loop de +1
       value,
       description,
       currency: selectedCurrency, // Moeda selecionada
       method,
       tag,
-      exchangeRates: currencies[selectedCurrency], // Cotação da moeda selecionada
+      exchangeRates: rate, // Cotação da moeda selecionada
     };
 
     dispatch({ type: 'ADD_EXPENSE', payload: newExpense });

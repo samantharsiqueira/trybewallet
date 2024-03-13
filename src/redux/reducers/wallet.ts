@@ -1,6 +1,6 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 import { FETCH_CURRENCIES, ADD_EXPENSE } from '../actions';
-import { ExpenseType, InitialStateType } from '../../types';
+import { ExpenseType, StoreType } from '../../types';
 
 export type ActionWallet = {
   type: string;
@@ -41,14 +41,5 @@ function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionWallet) {
       return state;
   }
 }
-
-// Novo seletor para calcular a soma total das despesas
-// Ajustar a tipagem correta
-export const selectTotalExpenses = (state: InitialStateType) => {
-  return state.wallet.expenses.reduce((acc, cur) => {
-    const sum = Number(cur.value) * Number(cur.exchangeRates[cur.currency]?.ask || 0);
-    return acc + sum;
-  }, 0);
-};
 
 export default WalletReducer;
