@@ -14,22 +14,22 @@ function WalletForm() {
   const [rate, setRate] = useState({}); // Valor inicial da cotação da moeda
   const walletState = useSelector((state: any) => state.wallet); // Valor inciial da wallet
 
+  const getCurrencies = async () => {
+    try {
+      const response = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const data = await response.json();
+      console.log(data);
+      setRate(data);
+      const currenciesArray = Object.keys(data) // Pega as chaves do objeto
+        .filter((currency) => currency !== 'USDT'); // Filtra as moedas que não são USDT
+      dispatch(fetchCurrencies(currenciesArray)); // Envia as moedas para o estado global
+    } catch (error) {
+      console.error('Erro ao obter moedas da API', error);
+    }
+  };
+
   useEffect(() => {
     // Fazer a requisição à API no momento da renderização do componente
-    const getCurrencies = async () => {
-      try {
-        const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-        const data = await response.json();
-        console.log(data);
-        setRate(data);
-        const currenciesArray = Object.keys(data) // Pega as chaves do objeto
-          .filter((currency) => currency !== 'USDT'); // Filtra as moedas que não são USDT
-        dispatch(fetchCurrencies(currenciesArray)); // Envia as moedas para o estado global
-      } catch (error) {
-        console.error('Erro ao obter moedas da API', error);
-      }
-    };
-
     getCurrencies();
   }, [dispatch]);
 
@@ -37,7 +37,7 @@ function WalletForm() {
 
   const handleAddExpense = () => {
     // Fazer a requisição à API no momento do clique do botão
-    WalletForm();
+    getCurrencies();
     // Lógica para adicionar a despesa ao estado global
     let id = 0;
     if (walletState.expenses.length > 0) {
