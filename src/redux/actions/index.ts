@@ -4,6 +4,7 @@ import { UserType, ExpenseType } from '../../types';
 
 export const FETCH_CURRENCIES = 'FETCH_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const loginUser = (User: UserType) => {
   return {
@@ -24,6 +25,10 @@ export const addExpense = (newExpense: AnyAction) => {
     type: ADD_EXPENSE,
     payload: newExpense,
   };
+};
+
+export const deleteExpense = (id: number) => {
+  return { type: DELETE_EXPENSE, payload: { id } };
 };
 
 export const requestSuccessful = (data: ExpenseType) => {

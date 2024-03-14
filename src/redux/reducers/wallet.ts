@@ -1,6 +1,6 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
-import { FETCH_CURRENCIES, ADD_EXPENSE } from '../actions';
-import { ExpenseType, StoreType } from '../../types';
+import { FETCH_CURRENCIES, ADD_EXPENSE, DELETE_EXPENSE } from '../actions';
+import { ExpenseType } from '../../types';
 
 export type ActionWallet = {
   type: string;
@@ -30,11 +30,11 @@ function WalletReducer(state = INITIAL_STATE_WALLET, action: ActionWallet) {
       console.log(action.payload);
       return { ...state, expenses: [...state.expenses, action.payload] };
 
-    case 'DELETE_EXPENSE':
+    case DELETE_EXPENSE:
       return {
         ...state,
         expenses: state.expenses
-          .filter((expense) => expense !== action.payload.id),
+          .filter((expense) => expense.id !== action.payload.id),
       };
 
     default:

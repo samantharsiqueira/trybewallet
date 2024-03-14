@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux'; // Como ajustar a tipagem??
 import { fetchCurrencies } from '../redux/actions';
+import Table from './Table';
 
 function WalletForm() {
   const dispatch = useDispatch(); // Envia pro estado global
@@ -61,57 +62,61 @@ function WalletForm() {
   };
 
   return (
-    <>
-      {/* Valor */}
-      <input
-        data-testid="value-input"
-        type="text"
-        value={ value }
-        onChange={ (e) => setValue(e.target.value) } // Atualiza o estado com o valor do input
-      />
-      {/* Descrição */}
-      <input
-        data-testid="description-input"
-        type="text"
-        value={ description }
-        onChange={ (e) => setDescription(e.target.value) } // Atualiza o estado com o valor da descrição
-      />
-      {/* Moeda */}
-      <select
-        data-testid="currency-input"
-        value={ selectedCurrency }
-        onChange={ (e) => setSelectedCurrency(e.target.value) }
-      >
-        {currencies?.map((currencyOption: string) => (
-          <option key={ currencyOption } value={ currencyOption }>
-            {currencyOption}
-          </option>
-        ))}
-      </select>
-      {/* Método de pagamento */}
-      <select
-        data-testid="method-input"
-        value={ method }
-        onChange={ (e) => setMethod(e.target.value) } // Atualiza o estado com o valor do método de pagamento
-      >
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Cartão de crédito">Cartão de crédito</option>
-        <option value="Cartão de débito">Cartão de débito</option>
-      </select>
-      {/* Categoria de despesa */}
-      <select
-        data-testid="tag-input"
-        value={ tag } // Valor que estamos selecionando no momento
-        onChange={ (e) => setTag(e.target.value) } // Atualiza o estado com o valor da categoria de despesa
-      >
-        <option value="Alimentação">Alimentação</option>
-        <option value="Lazer">Lazer</option>
-        <option value="Trabalho">Trabalho</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Saúde">Saúde</option>
-      </select>
-      <button onClick={ handleAddExpense } type="button">Adicionar despesa</button>
-    </>
+    <div>
+      <form>
+        {/* Valor */}
+        <input
+          data-testid="value-input"
+          type="text"
+          value={ value }
+          onChange={ (e) => setValue(e.target.value) }
+        />
+        {/* Descrição */}
+        <input
+          data-testid="description-input"
+          type="text"
+          value={ description }
+          onChange={ (e) => setDescription(e.target.value) }
+        />
+        {/* Moeda */}
+        <select
+          data-testid="currency-input"
+          value={ selectedCurrency }
+          onChange={ (e) => setSelectedCurrency(e.target.value) }
+        >
+          {currencies?.map((currencyOption: string) => (
+            <option key={ currencyOption } value={ currencyOption }>
+              {currencyOption}
+            </option>
+          ))}
+        </select>
+        {/* Método de pagamento */}
+        <select
+          data-testid="method-input"
+          value={ method }
+          onChange={ (e) => setMethod(e.target.value) }
+        >
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
+        </select>
+        {/* Categoria de despesa */}
+        <select
+          data-testid="tag-input"
+          value={ tag } // Valor que estamos selecionando no momento
+          onChange={ (e) => setTag(e.target.value) }
+        >
+          <option value="Alimentação">Alimentação</option>
+          <option value="Lazer">Lazer</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+        </select>
+        <button onClick={ handleAddExpense } type="button">Adicionar despesa</button>
+      </form>
+      <Table />
+    </div>
+
   );
 }
 
